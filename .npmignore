@@ -1,0 +1,13 @@
+.git*
+build.bat
+docs/
+test/
+support/
+src/
+build/
+.travis.yml
+npm-debug.log
+.DS_Store
+._*
+.lock-wscript
+/dist/Automator.node
