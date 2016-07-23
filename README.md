@@ -14,6 +14,8 @@ npm install windows-automator-lib --save
 This is the wrapper of windows-OS keyboard/mouse simulator implemented in C++.
 
 ## Usage
+[Examples here](https://github.com/samick17/windows-automator-lib/tree/master/examples)
+
   **Import module**
 
 	const WinAutomatorLib = require('windows-automator-lib');
