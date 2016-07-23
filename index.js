@@ -1,5 +1,3 @@
-require('./setup');
-
 module.exports = {
   VK: require('./vk'),
   HotkeyModifiers: require('./hotkey-modifiers'),

@@ -1,6 +1,6 @@
 {
   "name": "windows-automator-lib",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "This is the wrapper of windows simulator implemented in C++.",
   "repository": {
     "type": "git",
@@ -8,6 +8,7 @@
   },
   "main": "index.js",
   "scripts": {
+    "install": "setup.bat",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": {

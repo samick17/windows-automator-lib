@@ -6,5 +6,4 @@ module.exports = function() {
   var srcPath = __dirname+'/dist/Automator-'+abi+'.node';
   var destPath = __dirname+'/dist/Automator.node';
   fs.writeFileSync(destPath, fs.readFileSync(srcPath));
-  //fs.createReadStream(srcPath).pipe(fs.createWriteStream(destPath));
 }();
