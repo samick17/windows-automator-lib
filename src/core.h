@@ -23,7 +23,8 @@ public:
     void CombinationKey(std::vector<std::string> vkKeys);
 
     void MouseMove(int x, int y);//mouse move by screen coord
-    void MouseMoveR(int x, int y);//mouse move by active window coord
+    void MouseMoveRelative(int x, int y);//mouse move by active window coord
+    void MouseMoveOffset(int x, int y);//mouse move by cursor position
     int GetScreenX();
     int GetScreenY();
     Size Core::GetWinSize(HWND hwnd);
@@ -62,5 +63,7 @@ private:
     int ToScreenPosY(int y);
     int ToAbsoluteScreenPosX(int x);
     int ToAbsoluteScreenPosY(int y);
+    int ToOffsetPosX(int x, Point pt);
+    int ToOffsetPosY(int y, Point pt);
     std::vector<ProcInfo> _procInfos;
 };

@@ -28,9 +28,10 @@ MOUSEINPUT CreateMouseInput(int x, int y, int flag = 0, int data = 0) {
     MOUSEINPUT mi;
     mi.dx = x;
     mi.dy = y;
+    mi.time = 0;
+    mi.dwExtraInfo = 0;
     mi.mouseData = data;
     mi.dwFlags = flag != 0 ? flag : 0x0001;
-    mi.dwExtraInfo = 0;
     return mi;
 }
 
@@ -152,6 +153,14 @@ int Core::ToAbsoluteScreenPosX(int x) {
 
 int Core::ToAbsoluteScreenPosY(int y) {
     return ((y + this->ActiveWindowRect.position.y) * 0xFFFF / this->DesktopSize.h);
+}
+
+int Core::ToOffsetPosX(int x, Point pt) {
+    return ((x + pt.x) * 0xFFFF / this->DesktopSize.w);
+}
+
+int Core::ToOffsetPosY(int y, Point pt) {
+    return ((y + pt.y) * 0xFFFF / this->DesktopSize.h);
 }
 
 /*public*/
@@ -282,8 +291,13 @@ void Core::MouseMove(int x, int y) {
     SendMouseInput(CreateMouseInput(ToScreenPosX(x), ToScreenPosY(y), 0X8000 | 0X0001));
 }
 
-void Core::MouseMoveR(int x, int y) {
+void Core::MouseMoveRelative(int x, int y) {
     SendMouseInput(CreateMouseInput(ToAbsoluteScreenPosX(x), ToAbsoluteScreenPosY(y), 0X8000 | 0X0001));
+}
+
+void Core::MouseMoveOffset(int x, int y) {
+    Point pt = GetMousePosition();
+    SendMouseInput(CreateMouseInput(ToOffsetPosX(x, pt), ToOffsetPosY(y, pt), 0X8000 | 0X0001));
 }
 
 int Core::GetScreenX() {
@@ -373,7 +387,7 @@ void Core::MouseRightUp() {
 }
 
 void Core::MouseWheel(int value) {
-    SendMouseInput(CreateMouseInput(0, 0, 0x0800, value));
+    SendMouseInput(CreateMouseInput(0, 0, MOUSEEVENTF_WHEEL, value));
 }
 
 long Core::GetPixelAtCursorPosition() {

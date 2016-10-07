@@ -1,4 +1,4 @@
 @echo off
 
-node-gyp configure build
-copy .\build\Release\Automator.node .\dist\Automator.node
+call node-gyp configure build
+call copy .\build\Release\Automator.node .\dist\Automator.node

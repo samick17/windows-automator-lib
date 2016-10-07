@@ -239,7 +239,15 @@ void MouseMoveRelative(const v8::FunctionCallbackInfo<v8::Value>& args) {
     Core* core = Core::GetInstance();
     V8Wrapper wrapper = V8Wrapper(args);
     if (args.Length() == 2 && args[0]->IsInt32() && args[1]->IsInt32()) {
-        core->MouseMoveR(wrapper.getInt(0), wrapper.getInt(1));
+        core->MouseMoveRelative(wrapper.getInt(0), wrapper.getInt(1));
+    }
+}
+
+void MouseMoveOffset(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Core* core = Core::GetInstance();
+    V8Wrapper wrapper = V8Wrapper(args);
+    if (args.Length() == 2 && args[0]->IsInt32() && args[1]->IsInt32()) {
+        core->MouseMoveOffset(wrapper.getInt(0), wrapper.getInt(1));
     }
 }
 
@@ -405,6 +413,7 @@ void init(v8::Local<v8::Object> target) {
     NODE_SET_METHOD(target, "getActiveWindowRect", GetActiveWindowRect);
     NODE_SET_METHOD(target, "mouseMove", MouseMove);
     NODE_SET_METHOD(target, "mouseMoveRelative", MouseMoveRelative);
+    NODE_SET_METHOD(target, "mouseMoveOffset", MouseMoveOffset);
     NODE_SET_METHOD(target, "sendKey", SendKey);
     NODE_SET_METHOD(target, "sendCharByScanCode", SendCharByScanCode);
     NODE_SET_METHOD(target, "combinationKey", CombinationKey);
