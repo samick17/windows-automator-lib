@@ -267,6 +267,38 @@ void SendCharByScanCode(const v8::FunctionCallbackInfo<v8::Value>& args) {
     }
 }
 
+void KeyDownByVKValue(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Core* core = Core::GetInstance();
+    V8Wrapper wrapper = V8Wrapper(args);
+    if (args.Length() == 1 && args[0]->IsInt32()) {
+        core->KeyDownByVKValue(wrapper.getInt(0));
+    }
+}
+
+void KeyDown(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Core* core = Core::GetInstance();
+    V8Wrapper wrapper = V8Wrapper(args);
+    if (args.Length() == 1 && args[0]->IsString()) {
+        core->KeyDown(wrapper.getString(0));
+    }
+}
+
+void KeyUpByVKValue(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Core* core = Core::GetInstance();
+    V8Wrapper wrapper = V8Wrapper(args);
+    if (args.Length() == 1 && args[0]->IsInt32()) {
+        core->KeyUpByVKValue(wrapper.getInt(0));
+    }
+}
+
+void KeyUp(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Core* core = Core::GetInstance();
+    V8Wrapper wrapper = V8Wrapper(args);
+    if (args.Length() == 1 && args[0]->IsString()) {
+        core->KeyUp(wrapper.getString(0));
+    }
+}
+
 void CombinationKey(const v8::FunctionCallbackInfo<v8::Value>& args) {
     Core* core = Core::GetInstance();
     V8Wrapper wrapper = V8Wrapper(args);
@@ -407,6 +439,14 @@ void MouseWheel(const v8::FunctionCallbackInfo<v8::Value>& args) {
     }
 }
 
+void CloseWindow(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Core* core = Core::GetInstance();
+    V8Wrapper wrapper = V8Wrapper(args);
+    if (args.Length() == 1 && args[0]->IsInt32()) {
+        core->CloseWindow((HWND)wrapper.getInt(0));
+    }
+}
+
 void init(v8::Local<v8::Object> target) {
     NODE_SET_METHOD(target, "getWindowSize", GetWindowSize);
     NODE_SET_METHOD(target, "getWindowRect", GetWindowRect);
@@ -416,6 +456,10 @@ void init(v8::Local<v8::Object> target) {
     NODE_SET_METHOD(target, "mouseMoveOffset", MouseMoveOffset);
     NODE_SET_METHOD(target, "sendKey", SendKey);
     NODE_SET_METHOD(target, "sendCharByScanCode", SendCharByScanCode);
+    NODE_SET_METHOD(target, "keyDownByVKValue", KeyDownByVKValue);
+    NODE_SET_METHOD(target, "keyDown", KeyDown);
+    NODE_SET_METHOD(target, "keyUpByVKValue", KeyUpByVKValue);
+    NODE_SET_METHOD(target, "keyUp", KeyUp);
     NODE_SET_METHOD(target, "combinationKey", CombinationKey);
     NODE_SET_METHOD(target, "combinationKeyByVKValue", CombinationKeyByVKValue);
     NODE_SET_METHOD(target, "getAllWindows", GetAllWindows);
@@ -436,6 +480,7 @@ void init(v8::Local<v8::Object> target) {
     NODE_SET_METHOD(target, "mouseRightClick", MouseRightClick);
     NODE_SET_METHOD(target, "mouseRightUp", MouseRightUp);
     NODE_SET_METHOD(target, "mouseWheel", MouseWheel);
+    NODE_SET_METHOD(target, "closeWindow", CloseWindow);
 }
 
 NODE_MODULE(Automator, init);

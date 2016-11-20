@@ -50,6 +50,7 @@ public:
     void MouseRightDown();
     void MouseRightUp();
     void MouseWheel(int value);
+    void CloseWindow(HWND hwnd);
     static void Recycle();
     static Core* GetInstance();
     Size DesktopSize;

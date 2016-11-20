@@ -441,3 +441,7 @@ void Core::SwitchToWindow(std::string name) {
     ProcInfo pi = GetProcInfoByName(name);
     SwitchToWindow((HWND)pi.hwnd);
 }
+
+void Core::CloseWindow(HWND hwnd) {
+    DestroyWindow(hwnd);
+}
