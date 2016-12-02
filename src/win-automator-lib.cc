@@ -447,6 +447,14 @@ void CloseWindow(const v8::FunctionCallbackInfo<v8::Value>& args) {
     }
 }
 
+void CaptureScreen(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Core* core = Core::GetInstance();
+    V8Wrapper wrapper = V8Wrapper(args);
+    if (args.Length() == 1 && args[0]->IsInt32()) {
+        core->CaptureScreen((HWND)wrapper.getInt(0));
+    }
+}
+
 void init(v8::Local<v8::Object> target) {
     NODE_SET_METHOD(target, "getWindowSize", GetWindowSize);
     NODE_SET_METHOD(target, "getWindowRect", GetWindowRect);
@@ -481,6 +489,7 @@ void init(v8::Local<v8::Object> target) {
     NODE_SET_METHOD(target, "mouseRightUp", MouseRightUp);
     NODE_SET_METHOD(target, "mouseWheel", MouseWheel);
     NODE_SET_METHOD(target, "closeWindow", CloseWindow);
+    NODE_SET_METHOD(target, "captureScreen", CaptureScreen);
 }
 
 NODE_MODULE(Automator, init);

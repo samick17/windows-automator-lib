@@ -445,3 +445,36 @@ void Core::SwitchToWindow(std::string name) {
 void Core::CloseWindow(HWND hwnd) {
     DestroyWindow(hwnd);
 }
+
+void Core::CaptureScreen(HWND hwnd) {
+    int x1, y1, x2, y2, w, h;
+    RECT rect;
+    GetWindowRect(hwnd, &rect);
+
+    // get screen dimensions
+    x1  = rect.left;//GetSystemMetrics(SM_XVIRTUALSCREEN);
+    y1  = rect.top;//GetSystemMetrics(SM_YVIRTUALSCREEN);
+    x2  = rect.right;//GetSystemMetrics(SM_CXVIRTUALSCREEN);
+    y2  = rect.bottom;//GetSystemMetrics(SM_CYVIRTUALSCREEN);
+    w   = x2 - x1;
+    h   = y2 - y1;
+
+    // copy screen to bitmap
+    HDC     hScreen = GetDC(hwnd);
+    HDC     hDC     = CreateCompatibleDC(hScreen);
+    HBITMAP hBitmap = CreateCompatibleBitmap(hScreen, w, h);
+    HGDIOBJ old_obj = SelectObject(hDC, hBitmap);
+    BOOL    bRet    = BitBlt(hDC, 0, 0, w, h, hScreen, x1, y1, SRCCOPY);
+
+    // save bitmap to clipboard
+    OpenClipboard(NULL);
+    EmptyClipboard();
+    SetClipboardData(CF_BITMAP, hBitmap);
+    CloseClipboard();
+
+    // clean up
+    SelectObject(hDC, old_obj);
+    DeleteDC(hDC);
+    ReleaseDC(NULL, hScreen);
+    DeleteObject(hBitmap);
+}
