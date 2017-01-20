@@ -442,8 +442,22 @@ void Core::SwitchToWindow(std::string name) {
     SwitchToWindow((HWND)pi.hwnd);
 }
 
-void Core::CloseWindow(HWND hwnd) {
-    DestroyWindow(hwnd);
+void Core::HideWindow(HWND hwnd) {
+    CloseWindow(hwnd);
+}
+
+void Core::HideWindow(std::string name) {
+    ProcInfo pi = GetProcInfoByName(name);
+    HideWindow((HWND)pi.hwnd);
+}
+
+void Core::DestroyWindow(HWND hwnd) {
+    PostMessage(hwnd, WM_CLOSE, 0, 0);
+}
+
+void Core::DestroyWindow(std::string name) {
+    ProcInfo pi = GetProcInfoByName(name);
+    this->DestroyWindow((HWND)pi.hwnd);
 }
 
 void Core::CaptureScreen(HWND hwnd) {

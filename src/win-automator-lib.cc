@@ -439,11 +439,35 @@ void MouseWheel(const v8::FunctionCallbackInfo<v8::Value>& args) {
     }
 }
 
-void CloseWindow(const v8::FunctionCallbackInfo<v8::Value>& args) {
+void HideWindow(const v8::FunctionCallbackInfo<v8::Value>& args) {
     Core* core = Core::GetInstance();
     V8Wrapper wrapper = V8Wrapper(args);
     if (args.Length() == 1 && args[0]->IsInt32()) {
-        core->CloseWindow((HWND)wrapper.getInt(0));
+        core->HideWindow((HWND)wrapper.getInt(0));
+    }
+}
+
+void HideWindowByName(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Core* core = Core::GetInstance();
+    V8Wrapper wrapper = V8Wrapper(args);
+    if (args.Length() == 1 && args[0]->IsString()) {
+        core->HideWindow(wrapper.getString(0));
+    }
+}
+
+void DestroyWindow(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Core* core = Core::GetInstance();
+    V8Wrapper wrapper = V8Wrapper(args);
+    if (args.Length() == 1 && args[0]->IsInt32()) {
+        core->DestroyWindow((HWND)wrapper.getInt(0));
+    }
+}
+
+void DestroyWindowByName(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Core* core = Core::GetInstance();
+    V8Wrapper wrapper = V8Wrapper(args);
+    if (args.Length() == 1 && args[0]->IsString()) {
+        core->DestroyWindow(wrapper.getString(0));
     }
 }
 
@@ -488,7 +512,10 @@ void init(v8::Local<v8::Object> target) {
     NODE_SET_METHOD(target, "mouseRightClick", MouseRightClick);
     NODE_SET_METHOD(target, "mouseRightUp", MouseRightUp);
     NODE_SET_METHOD(target, "mouseWheel", MouseWheel);
-    NODE_SET_METHOD(target, "closeWindow", CloseWindow);
+    NODE_SET_METHOD(target, "hideWindow", HideWindow);
+    NODE_SET_METHOD(target, "hideWindowByName", HideWindowByName);
+    NODE_SET_METHOD(target, "closeWindow", DestroyWindow);
+    NODE_SET_METHOD(target, "closeWindowByName", DestroyWindowByName);
     NODE_SET_METHOD(target, "captureScreen", CaptureScreen);
 }
 

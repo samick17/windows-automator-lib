@@ -50,7 +50,10 @@ public:
     void MouseRightDown();
     void MouseRightUp();
     void MouseWheel(int value);
-    void CloseWindow(HWND hwnd);
+    void HideWindow(HWND hwnd);
+    void HideWindow(std::string name);
+    void DestroyWindow(HWND hwnd);
+    void DestroyWindow(std::string name);
     void CaptureScreen(HWND hwnd);
     static void Recycle();
     static Core* GetInstance();
