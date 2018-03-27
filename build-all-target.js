@@ -4,8 +4,9 @@ const nodeAbi = require('node-abi-version');
 function getVersionData() {
 	var verAbiMap = {};
 	var abiVerMap = {};
-	for(var ver in nodeAbi) {
-		var abi = nodeAbi[ver];
+	var abiVersionMap = nodeAbi.abiVersionMap;
+	for(var ver in abiVersionMap) {
+		var abi = abiVersionMap[ver];
 		if(!(abi in abiVerMap)) {
 			abiVerMap[abi] = ver;
 			verAbiMap[ver] = abi;
