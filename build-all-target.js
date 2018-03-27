@@ -38,6 +38,9 @@ function execCmd(cmd, args, callback) {
 function buildTarget(verAbi, callback) {
 	var ver = Object.keys(verAbi)[0];
 	var abi = verAbi[ver];
+	console.log('---- build target ----');
+	console.log(`Version: ${ver}`);
+	console.log(`ABI: ${abi}`);
 	execCmd('cmd', ['/c', 'build-target.bat', ver, abi], callback);
 }
 const Utils = {

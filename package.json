@@ -1,6 +1,6 @@
 {
   "name": "windows-automator-lib",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "This is the wrapper of windows simulator implemented in C++.",
   "repository": {
     "type": "git",
