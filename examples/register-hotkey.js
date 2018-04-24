@@ -1,7 +1,12 @@
 const Core = require('../core');
 const VK = require('../vk');
-const HotkeyModifier = require('../hotkey-modifiers');
+const HotkeyModifiers = require('../hotkey-modifiers');
 const Utils = require('util');
+//if installed by package, using:
+//const Lib = require('windows-automator-lib');
+//const Core = Lib.Core;
+//const VK = Lib.VK;
+//const HotkeyModifiers = Lib.HotkeyModifiers;
 
 /*
 example of register hotkey
@@ -17,14 +22,14 @@ function registerHotkey(id, keyEventConfig) {
 
 var keyEventMap = {
   1: {
-    modKey: HotkeyModifier.CONTROL|HotkeyModifier.SHIFT,
+    modKey: HotkeyModifiers.CONTROL|HotkeyModifiers.SHIFT,
     key: VK.H,
     handler: function() {
       console.log('handle event 1');
     }
   },
   2: {
-    modKey: HotkeyModifier.CONTROL,
+    modKey: HotkeyModifiers.CONTROL,
     key: VK.G,
     handler: function() {
       console.log('handle event 2');

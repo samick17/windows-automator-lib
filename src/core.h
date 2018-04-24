@@ -11,6 +11,7 @@
 class Core {
 public:
     std::vector<ProcInfo> GetAllWindows();
+    std::vector<ProcInfo> GetChildWindowsById(HWND hwnd);
     void SendCharByScanCode(int scanCode);
     void SendKeyByVkValue(int vk);
     void SendKey(std::string vkKey);
@@ -55,6 +56,7 @@ public:
     void DestroyWindow(HWND hwnd);
     void DestroyWindow(std::string name);
     void CaptureScreen(HWND hwnd);
+    std::string GetTextById(HWND hwnd);
     static void Recycle();
     static Core* GetInstance();
     Size DesktopSize;

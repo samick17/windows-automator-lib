@@ -193,17 +193,10 @@ BOOL CALLBACK enumWindowsProc(HWND hwnd, LPARAM lParam) {
     }
     else {
         int length = GetWindowTextLengthW(hwnd);
-        ///if (0 == length) return TRUE;
         Core* core = Core::GetInstance();
         wchar_t* buffer = new wchar_t[length + 1];
-        GetWindowTextW(hwnd, buffer, length);
+        GetWindowTextW(hwnd, buffer, length + 1);
         std::string name = wcharToString(buffer);
-        /*std::wstring str(buffer);
-        std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-        std::string utf8_string = converter.to_bytes(str);*/
-        //delete[] buffer;
-
-        //delete[] buffer;
         ProcInfo procInfo;
         procInfo.name = name;
         procInfo.hwnd = (int)hwnd;
@@ -215,6 +208,12 @@ BOOL CALLBACK enumWindowsProc(HWND hwnd, LPARAM lParam) {
 std::vector<ProcInfo> Core::GetAllWindows() {
     this->_procInfos = std::vector<ProcInfo>();
     EnumWindows(enumWindowsProc, 0);
+    return this->_procInfos;
+}
+
+std::vector<ProcInfo> Core::GetChildWindowsById(HWND hwnd) {
+    this->_procInfos = std::vector<ProcInfo>();
+    EnumChildWindows(hwnd, enumWindowsProc, 0);
     return this->_procInfos;
 }
 
@@ -491,4 +490,12 @@ void Core::CaptureScreen(HWND hwnd) {
     DeleteDC(hDC);
     ReleaseDC(NULL, hScreen);
     DeleteObject(hBitmap);
+}
+
+std::string Core::GetTextById(HWND hwnd) {
+    int length = GetWindowTextLengthW(hwnd);
+    wchar_t* buffer = new wchar_t[length + 1];
+    GetWindowTextW(hwnd, buffer, length + 1);
+    std::string name = wcharToString(buffer);
+    return name;
 }

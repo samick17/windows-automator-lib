@@ -1,4 +1,6 @@
-var Core = require('../core');
+const Core = require('../core');
+//if installed by package, using:
+//const Core = require('windows-automator-lib').Core;
 
 var wheelValue = -20;
 Core.mouseLeftClick();

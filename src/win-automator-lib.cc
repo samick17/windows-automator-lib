@@ -321,6 +321,15 @@ void GetAllWindows(const v8::FunctionCallbackInfo<v8::Value>& args) {
     wrapper.returnVal(core->GetAllWindows());
 }
 
+void GetChildWindowsById(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Core* core = Core::GetInstance();
+    V8Wrapper wrapper = V8Wrapper(args);
+    if (args.Length() == 1 && args[0]->IsInt32()) {
+        HWND hwnd = (HWND)wrapper.getInt(0);
+        wrapper.returnVal(core->GetChildWindowsById(hwnd));
+    }
+}
+
 void SwitchToWindow(const v8::FunctionCallbackInfo<v8::Value>& args) {
     Core* core = Core::GetInstance();
     V8Wrapper wrapper = V8Wrapper(args);
@@ -479,6 +488,14 @@ void CaptureScreen(const v8::FunctionCallbackInfo<v8::Value>& args) {
     }
 }
 
+void GetTextById(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Core* core = Core::GetInstance();
+    V8Wrapper wrapper = V8Wrapper(args);
+    if (args.Length() == 1 && args[0]->IsInt32()) {
+        wrapper.returnVal(core->GetTextById((HWND)wrapper.getInt(0)));
+    }
+}
+
 void init(v8::Local<v8::Object> target) {
     NODE_SET_METHOD(target, "getWindowSize", GetWindowSize);
     NODE_SET_METHOD(target, "getWindowRect", GetWindowRect);
@@ -495,6 +512,7 @@ void init(v8::Local<v8::Object> target) {
     NODE_SET_METHOD(target, "combinationKey", CombinationKey);
     NODE_SET_METHOD(target, "combinationKeyByVKValue", CombinationKeyByVKValue);
     NODE_SET_METHOD(target, "getAllWindows", GetAllWindows);
+    NODE_SET_METHOD(target, "getChildWindowsById", GetChildWindowsById);
     NODE_SET_METHOD(target, "switchToWindow", SwitchToWindow);
     NODE_SET_METHOD(target, "switchToWindowByName", SwitchToWindowByName);
     NODE_SET_METHOD(target, "setActiveWindow", SetActiveWindow);
@@ -517,6 +535,7 @@ void init(v8::Local<v8::Object> target) {
     NODE_SET_METHOD(target, "closeWindow", DestroyWindow);
     NODE_SET_METHOD(target, "closeWindowByName", DestroyWindowByName);
     NODE_SET_METHOD(target, "captureScreen", CaptureScreen);
+    NODE_SET_METHOD(target, "getTextById", GetTextById);
 }
 
 NODE_MODULE(Automator, init);

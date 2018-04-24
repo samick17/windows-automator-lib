@@ -1,5 +1,9 @@
-var Core = require('../core');
-var VK = require('../vk');
+const Core = require('../core');
+const VK = require('../vk');
+//if installed by package, using:
+//const Lib = require('windows-automator-lib');
+//const Core = Lib.Core;
+//const VK = Lib.VK;
 
 //simualte enter by character
 for(var i = 0; i < 10;i++)
