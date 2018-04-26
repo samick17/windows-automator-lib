@@ -15,8 +15,11 @@ This is the wrapper of windows-OS keyboard/mouse simulator implemented in C++.
 
 ## ChangeLogs
 
-2018/03/28 Update to 1.4.0(support for node abi: 59)
-2018/04/24 Fix getAllWindows encoding problem, add examples: bot(trigger by global hot keys)
+2018/03/28 Update to 1.4.0(support for node abi: 59) - 1.4.0
+
+2018/04/24 Fix getAllWindows encoding problem, add examples: bot(trigger by global hot keys) - 1.4.1
+
+2018/04/26 Update module for x86, x64 arch - 1.4.2
 
 ## Usage
 [Examples here](https://github.com/samick17/windows-automator-lib/tree/master/examples)
