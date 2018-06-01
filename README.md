@@ -13,13 +13,42 @@ npm install windows-automator-lib --save
 ##Description
 This is the wrapper of windows-OS keyboard/mouse simulator implemented in C++.
 
+## Supported Node Version
+
+<table>
+	<tr>
+		<th><div>NodeJS Version</div></th>
+		<th><div>NODE_MODULE_VERSION</div></th>
+	</tr>
+	<tbody>
+		<tr><td><div>Node.js 9.0.0 - Node.js 9.11.1</div></td><td><div>59</div></td></tr>
+		<tr><td><div>Node.js 8.0.0 - Node.js 8.11.2</div></td><td><div>57</div></td></tr>
+		<tr><td><div>Node.js 7.0.0 - Node.js 7.10.1</div></td><td><div>51</div></td></tr>
+		<tr><td><div>Node.js 6.0.0 - Node.js 6.14.2</div></td><td><div>48</div></td></tr>
+		<tr><td><div>Node.js 5.0.0 - Node.js 5.12.0</div></td><td><div>47</div></td></tr>
+		<tr><td><div>Node.js 4.0.0 - Node.js 4.9.1</div></td><td><div>46</div></td></tr>
+		<tr><td><div>io.js 3.0.0 - io.js 3.3.1</div></td><td><div>45</div></td></tr>
+		<tr><td><div>io.js 2.0.0 - io.js 2.5.0</div></td><td><div>44</div></td></tr>
+		<tr><td><div>io.js 1.1.0 - io.js 1.8.4</div></td><td><div>43</div></td></tr>
+		<tr><td><div>io.js 1.0.0 - io.js 1.0.4</div></td><td><div>42</div></td></tr>
+		<tr><td><div>Node.js 0.11.11 - Node.js 0.12.18</div></td><td><div>14</div></td></tr>
+	</tbody>
+</table>
+
 ## ChangeLogs
 
-2018/03/28 Update to 1.4.0(support for node abi: 59) - 1.4.0
+#### 2018/06/02(1.4.5)
+1. clean bin before build target
+2. update node-abi-version to 1.0.16
 
-2018/04/24 Fix getAllWindows encoding problem, add examples: bot(trigger by global hot keys) - 1.4.1
+#### 2018/04/26( - 1.4.2)
+1. Update module for x86, x64 arch
 
-2018/04/26 Update module for x86, x64 arch - 1.4.2
+#### 2018/04/24(1.4.1)
+1.Fix getAllWindows encoding problem, add examples: bot(trigger by global hot keys)
+
+#### 2018/03/28(1.4.0)
+1. Update to 1.4.0(support for node abi: 59)
 
 ## Usage
 [Examples here](https://github.com/samick17/windows-automator-lib/tree/master/examples)
