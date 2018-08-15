@@ -21,7 +21,8 @@ This is the wrapper of windows-OS keyboard/mouse simulator implemented in C++.
 		<th><div>NODE_MODULE_VERSION</div></th>
 	</tr>
 	<tbody>
-		<tr><td><div>Node.js 9.0.0 - Node.js 9.11.1</div></td><td><div>59</div></td></tr>
+		<tr><td><div>Node.js 10.0.0	 - Node.js 10.8.0</div></td><td><div>64</div></td></tr>
+		<tr><td><div>Node.js 9.0.0 - Node.js 9.11.2</div></td><td><div>59</div></td></tr>
 		<tr><td><div>Node.js 8.0.0 - Node.js 8.11.2</div></td><td><div>57</div></td></tr>
 		<tr><td><div>Node.js 7.0.0 - Node.js 7.10.1</div></td><td><div>51</div></td></tr>
 		<tr><td><div>Node.js 6.0.0 - Node.js 6.14.2</div></td><td><div>48</div></td></tr>
@@ -36,6 +37,10 @@ This is the wrapper of windows-OS keyboard/mouse simulator implemented in C++.
 </table>
 
 ## ChangeLogs
+
+#### 2018/08/15(1.4.8)
+1. add new function: getWindowProperties(see also examples/get-child-windows.js)
+2. update node-abi-version to 1.1.5
 
 #### 2018/06/02(1.4.5)
 1. clean bin before build target

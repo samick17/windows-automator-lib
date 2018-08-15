@@ -205,6 +205,44 @@ BOOL CALLBACK enumWindowsProc(HWND hwnd, LPARAM lParam) {
     return true;
 };
 
+BOOL CALLBACK enumWindowsProp(HWND hwnd, LPTSTR lpszString, HANDLE hData, ULONG_PTR dwData) {
+    //printf("asdasd");
+    if (!IsWindowVisible(hwnd)) {
+        return true;
+    }
+    else {
+        Core* core = Core::GetInstance();
+        PropInfo propInfo;
+
+        UINT rc;
+        ATOM atmText;
+        atmText=GlobalFindAtom(lpszString);
+        std::string strText;
+
+        #if defined(_UNICODE)
+        {
+            wchar_t szBuf[MAX_PATH] = { 0 };
+            GlobalGetAtomNameW(atmText, szBuf, _countof(szBuf));
+            rc=GetAtomName(atmText,szBuf,_countof(szBuf));
+            wstring ws(txt);
+            strText(ws.begin(), ws.end());
+        }
+        #else
+        {
+            char szBuf[MAX_PATH] = { 0 };
+            rc=GlobalGetAtomNameA(atmText, szBuf, _countof(szBuf));
+            strText=szBuf;
+        }
+        #endif
+        
+        propInfo.name = strText;
+
+        propInfo.hwnd = (int)hwnd;
+        core->AppendPropInfo(propInfo);
+    }
+    return true;
+};
+
 std::vector<ProcInfo> Core::GetAllWindows() {
     this->_procInfos = std::vector<ProcInfo>();
     EnumWindows(enumWindowsProc, 0);
@@ -422,6 +460,10 @@ void Core::AppendProcInfo(ProcInfo procInfo) {
     this->_procInfos.push_back(procInfo);
 }
 
+void Core::AppendPropInfo(PropInfo propInfo) {
+    this->_propInfos.push_back(propInfo);
+}
+
 ProcInfo Core::GetProcInfoByName(std::string name) {
     std::vector<ProcInfo> procInfos = GetAllWindows();
     for (ProcInfo pi : procInfos) {
@@ -498,4 +540,12 @@ std::string Core::GetTextById(HWND hwnd) {
     GetWindowTextW(hwnd, buffer, length + 1);
     std::string name = wcharToString(buffer);
     return name;
+}
+
+std::vector<PropInfo> Core::GetWindowProperties(HWND hwnd) {
+    this->_propInfos = std::vector<PropInfo>();
+    PropInfo propInfo;
+    this->AppendPropInfo(propInfo);
+    EnumPropsEx(hwnd, enumWindowsProp, NULL);
+    return this->_propInfos;
 }

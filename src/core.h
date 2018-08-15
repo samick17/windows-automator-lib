@@ -7,6 +7,7 @@
 #include "size.h"
 #include "rect.h"
 #include "procInfo.h"
+#include "propInfo.h"
 
 class Core {
 public:
@@ -41,6 +42,7 @@ public:
     long GetPixelAt(int x, int y);
     Color PixelToColor(long pixelValue);
     void AppendProcInfo(ProcInfo procInfo);
+    void AppendPropInfo(PropInfo propInfo);
     ProcInfo GetProcInfoByName(std::string name);
     void SwitchToWindow(HWND hwnd);
     void SwitchToWindow(std::string name);
@@ -57,6 +59,7 @@ public:
     void DestroyWindow(std::string name);
     void CaptureScreen(HWND hwnd);
     std::string GetTextById(HWND hwnd);
+    std::vector<PropInfo> GetWindowProperties(HWND hwnd);
     static void Recycle();
     static Core* GetInstance();
     Size DesktopSize;
@@ -73,4 +76,5 @@ private:
     int ToOffsetPosX(int x, Point pt);
     int ToOffsetPosY(int y, Point pt);
     std::vector<ProcInfo> _procInfos;
+    std::vector<PropInfo> _propInfos;
 };

@@ -46,6 +46,9 @@ public:
     void returnVal(std::vector<ProcInfo> data) {
         this->_args.GetReturnValue().Set(this->toV8(data));
     }
+    void returnVal(std::vector<PropInfo> data) {
+        this->_args.GetReturnValue().Set(this->toV8(data));
+    }
     int getInt(int argIndex) {
         if (this->_args.Length() > argIndex) {
             return (int)this->_args[argIndex]->ToInteger()->Value();
@@ -166,6 +169,18 @@ private:
         v8::Local<v8::Array> array = v8::Array::New(this->_isolate, length);
         for (int i = 0; i < length; i++) {
             ProcInfo pi = arr[i];
+            v8::Local<v8::Object> v8Obj = v8::Object::New(this->_isolate);
+            v8Obj->Set(toV8("name"), toV8(pi.name));
+            v8Obj->Set(toV8("hwnd"), toV8(pi.hwnd));
+            array->Set(i, v8Obj);
+        }
+        return array;
+    }
+    v8::Local<v8::Array> toV8(std::vector<PropInfo> arr) {
+        int length = (int)arr.size();
+        v8::Local<v8::Array> array = v8::Array::New(this->_isolate, length);
+        for (int i = 0; i < length; i++) {
+            PropInfo pi = arr[i];
             v8::Local<v8::Object> v8Obj = v8::Object::New(this->_isolate);
             v8Obj->Set(toV8("name"), toV8(pi.name));
             v8Obj->Set(toV8("hwnd"), toV8(pi.hwnd));
@@ -496,6 +511,15 @@ void GetTextById(const v8::FunctionCallbackInfo<v8::Value>& args) {
     }
 }
 
+void GetWindowProperties(const v8::FunctionCallbackInfo<v8::Value>& args) {
+    Core* core = Core::GetInstance();
+    V8Wrapper wrapper = V8Wrapper(args);
+    if (args.Length() == 1 && args[0]->IsInt32()) {
+        HWND hwnd = (HWND)wrapper.getInt(0);
+        wrapper.returnVal(core->GetWindowProperties(hwnd));
+    }
+}
+
 void init(v8::Local<v8::Object> target) {
     NODE_SET_METHOD(target, "getWindowSize", GetWindowSize);
     NODE_SET_METHOD(target, "getWindowRect", GetWindowRect);
@@ -536,6 +560,7 @@ void init(v8::Local<v8::Object> target) {
     NODE_SET_METHOD(target, "closeWindowByName", DestroyWindowByName);
     NODE_SET_METHOD(target, "captureScreen", CaptureScreen);
     NODE_SET_METHOD(target, "getTextById", GetTextById);
+    NODE_SET_METHOD(target, "getWindowProperties", GetWindowProperties);
 }
 
 NODE_MODULE(Automator, init);
