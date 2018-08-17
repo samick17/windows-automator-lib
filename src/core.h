@@ -8,6 +8,7 @@
 #include "rect.h"
 #include "procInfo.h"
 #include "propInfo.h"
+#include "imageData.h"
 
 class Core {
 public:
@@ -57,7 +58,8 @@ public:
     void HideWindow(std::string name);
     void DestroyWindow(HWND hwnd);
     void DestroyWindow(std::string name);
-    void CaptureScreen(HWND hwnd);
+    void CaptureScreenToClipBoard(HWND hwnd);
+    ImageData CaptureScreen(HWND hwnd);
     std::string GetTextById(HWND hwnd);
     std::vector<PropInfo> GetWindowProperties(HWND hwnd);
     static void Recycle();

@@ -501,16 +501,16 @@ void Core::DestroyWindow(std::string name) {
     this->DestroyWindow((HWND)pi.hwnd);
 }
 
-void Core::CaptureScreen(HWND hwnd) {
+void Core::CaptureScreenToClipBoard(HWND hwnd) {
     int x1, y1, x2, y2, w, h;
     RECT rect;
     GetWindowRect(hwnd, &rect);
 
     // get screen dimensions
-    x1  = rect.left;//GetSystemMetrics(SM_XVIRTUALSCREEN);
-    y1  = rect.top;//GetSystemMetrics(SM_YVIRTUALSCREEN);
-    x2  = rect.right;//GetSystemMetrics(SM_CXVIRTUALSCREEN);
-    y2  = rect.bottom;//GetSystemMetrics(SM_CYVIRTUALSCREEN);
+    x1  = rect.left;
+    y1  = rect.top;
+    x2  = rect.right;
+    y2  = rect.bottom;
     w   = x2 - x1;
     h   = y2 - y1;
 
@@ -519,7 +519,7 @@ void Core::CaptureScreen(HWND hwnd) {
     HDC     hDC     = CreateCompatibleDC(hScreen);
     HBITMAP hBitmap = CreateCompatibleBitmap(hScreen, w, h);
     HGDIOBJ old_obj = SelectObject(hDC, hBitmap);
-    BOOL    bRet    = BitBlt(hDC, 0, 0, w, h, hScreen, x1, y1, SRCCOPY);
+    BOOL    bRet    = BitBlt(hDC, 0, 0, w, h, hScreen, 0, 0, SRCCOPY);
 
     // save bitmap to clipboard
     OpenClipboard(NULL);
@@ -532,6 +532,75 @@ void Core::CaptureScreen(HWND hwnd) {
     DeleteDC(hDC);
     ReleaseDC(NULL, hScreen);
     DeleteObject(hBitmap);
+}
+
+ImageData Core::CaptureScreen(HWND hwnd) {
+    int x1, y1, x2, y2, w, h;
+    RECT rect;
+    GetWindowRect(hwnd, &rect);
+
+    // get screen dimensions
+    x1  = rect.left;
+    y1  = rect.top;
+    x2  = rect.right;
+    y2  = rect.bottom;
+    w   = x2 - x1;
+    h   = y2 - y1;
+
+    // copy screen to bitmap
+    HDC     hScreen = GetDC(hwnd);
+    HDC     hDC     = CreateCompatibleDC(hScreen);
+    HBITMAP hBitmap = CreateCompatibleBitmap(hScreen, w, h);
+    HGDIOBJ old_obj = SelectObject(hDC, hBitmap);
+    BOOL    bRet    = BitBlt(hDC, 0, 0, w, h, hScreen, 0, 0, SRCCOPY);
+
+    BITMAP bmp;
+    GetObject(hBitmap, sizeof(bmp), &bmp);
+
+    BITMAPINFO info { };
+    info.bmiHeader.biSize = sizeof(info.bmiHeader);
+    info.bmiHeader.biWidth = bmp.bmWidth;
+    // pay attention to the sign, you most likely want a 
+    // top-down pixel array as it's easier to use
+    info.bmiHeader.biHeight = -bmp.bmHeight;
+    info.bmiHeader.biPlanes = 1;
+    info.bmiHeader.biBitCount = 24;
+    info.bmiHeader.biCompression = BI_RGB;
+
+    // the following calculations work for 16/24/32 bits bitmaps 
+    // but assume a byte pixel array
+    size_t pixelSize = info.bmiHeader.biBitCount / 8;
+    // the + 3 ) & ~3 part is there to ensure that each
+    // scan line is 4 byte aligned
+    size_t scanlineSize = (pixelSize * info.bmiHeader.biWidth + 3) & ~3;
+    size_t bitmapSize = bmp.bmHeight * scanlineSize;
+
+    std::vector<BYTE> pixels(bitmapSize);
+    GetDIBits(hDC, hBitmap, 0, bmp.bmHeight, &pixels[0], &info, DIB_RGB_COLORS);
+
+    for (LONG y = 0; y < bmp.bmHeight; y++)
+    {
+        for (LONG x = 0; x < bmp.bmWidth; x++)
+        {
+                    size_t pixelOffset = y * scanlineSize + x * pixelSize;
+            COLORREF color = RGB(
+                pixels[pixelOffset + 2],
+                pixels[pixelOffset + 1],
+                pixels[pixelOffset + 0]);
+            SetPixel(hDC, x, y, color);
+        }
+    }
+
+    // clean up
+    SelectObject(hDC, old_obj);
+    DeleteDC(hDC);
+    ReleaseDC(NULL, hScreen);
+    DeleteObject(hBitmap);
+    ImageData imgData;
+    imgData.width = bmp.bmWidth;
+    imgData.height = bmp.bmHeight;
+    imgData.data = pixels;
+    return imgData;
 }
 
 std::string Core::GetTextById(HWND hwnd) {
