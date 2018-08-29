@@ -27,8 +27,8 @@ module.exports.pressUpArrow = function() {
 module.exports.pressDownArrow = function() {
 	binding.combinationKey(['shift', 'down']);
 };
-function getScreenShotData(hwnd, handler) {
-	var imgData = binding.captureScreen(hwnd);
+function getScreenShotData(hwnd, handler, left, top, width, height) {
+	var imgData = binding.captureScreen(hwnd, left, top, width, height);
 	var dots = [];
 	var w = imgData.w, h = imgData.h;
 	var data = imgData.data;
@@ -62,7 +62,7 @@ function getScreenShotData(hwnd, handler) {
 		data: dots
 	};
 };
-module.exports.getScreenShotData = function(hwnd) {
+module.exports.getScreenShotData = function(hwnd, left, top, width, height) {
 	return getScreenShotData(hwnd, {
 		preValue: function(value) {
 			return zfill(value.toString(16), 2);
@@ -77,12 +77,30 @@ module.exports.getScreenShotData = function(hwnd) {
 			dataArray[index].b = value;
 		},
 		postValue: function(dataArray, index) {
-			let color = dataArray[index];
+			var color = dataArray[index];
 			dataArray[index] = '#'+color.r+color.g+color.b;
 		}
-	});
+	}, left, top, width, height);
 };
-module.exports.getScreenShotDataGrayScale = function(hwnd) {
+module.exports.getScreenShotDataGrayScale = function(hwnd, left, top, width, height) {
+	return getScreenShotData(hwnd, {
+		r: function(dataArray, index, value) {
+			dataArray[index].r = value;
+		},
+		g: function(dataArray, index, value) {
+			dataArray[index].g = value;
+		},
+		b: function(dataArray, index, value) {
+			dataArray[index].b = value;
+		},
+		postValue: function(dataArray, index) {
+			var color = dataArray[index];
+			var v = parseInt((color.r + color.g + color.b) / 765 * 255).toString(16);
+			dataArray[index] = '#'+v+v+v;
+		}
+	}, left, top, width, height);
+};
+module.exports.getScreenShotDataBlackWhite = function(hwnd, left, top, width, height) {
 	return getScreenShotData(hwnd, {
 		r: function(dataArray, index, value) {
 			dataArray[index].r = value;
@@ -95,9 +113,15 @@ module.exports.getScreenShotDataGrayScale = function(hwnd) {
 			
 		},
 		postValue: function(dataArray, index) {
-			let color = dataArray[index];
-			var v = parseInt((color.r + color.g + color.b) / 765 * 255).toString(16);
+			var color = dataArray[index];
+			var sum = (color.r + color.g + color.b);
+			var v;
+			if(sum < 383) {
+				v = '00';
+			} else {
+				v = 'ff';
+			}
 			dataArray[index] = '#'+v+v+v;
 		}
-	});
+	}, left, top, width, height);
 };

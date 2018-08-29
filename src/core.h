@@ -59,6 +59,7 @@ public:
     void DestroyWindow(HWND hwnd);
     void DestroyWindow(std::string name);
     void CaptureScreenToClipBoard(HWND hwnd);
+    ImageData CaptureScreen(HWND hwnd, int left, int top, int width, int height);
     ImageData CaptureScreen(HWND hwnd);
     std::string GetTextById(HWND hwnd);
     std::vector<PropInfo> GetWindowProperties(HWND hwnd);

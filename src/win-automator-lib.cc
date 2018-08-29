@@ -531,6 +531,8 @@ void CaptureScreen(const v8::FunctionCallbackInfo<v8::Value>& args) {
     V8Wrapper wrapper = V8Wrapper(args);
     if (args.Length() == 1 && args[0]->IsInt32()) {
         wrapper.returnVal(core->CaptureScreen((HWND)wrapper.getInt(0)));
+    } else if(args.Length() == 5 && args[0]->IsInt32() && args[1]->IsInt32() && args[2]->IsInt32() && args[3]->IsInt32() && args[4]->IsInt32()) {
+        wrapper.returnVal(core->CaptureScreen((HWND)wrapper.getInt(0), wrapper.getInt(1), wrapper.getInt(2), wrapper.getInt(3), wrapper.getInt(4)));
     }
 }
 

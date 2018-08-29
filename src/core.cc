@@ -534,8 +534,8 @@ void Core::CaptureScreenToClipBoard(HWND hwnd) {
     DeleteObject(hBitmap);
 }
 
-ImageData Core::CaptureScreen(HWND hwnd) {
-    int x1, y1, x2, y2, w, h;
+ImageData Core::CaptureScreen(HWND hwnd, int left, int top, int width, int height) {
+    int x1, y1, x2, y2, l, t, w, h;
     RECT rect;
     GetWindowRect(hwnd, &rect);
 
@@ -544,15 +544,39 @@ ImageData Core::CaptureScreen(HWND hwnd) {
     y1  = rect.top;
     x2  = rect.right;
     y2  = rect.bottom;
-    w   = x2 - x1;
-    h   = y2 - y1;
+    l = left;
+    t = top;
+    w = width;
+    h = height;
+    int originW = x2 - x1;
+    int originH = y2 - y1;
+    if(l < 0 || l > originW) l = 0;
+    if(t < 0 || t > originH) t = 0;
+    if(l + w < 0 || l + w > originW) w = originW;
+    if(t + h < 0 || t + h > originH) h = originH;
+    /*int originLeft = x1;
+    int originTop = y1;
+    int originWidth = x2 - x2;
+    int originHeight = y2 - y1;
+    if(left >= 0 && left + width <= originWidth && top >= 0 && top + height <= originHeight) {
+        l = left;
+        t = top;
+        w = width;
+        h = height;
+    } else {
+        l = 0;
+        t = 0;
+        w = originWidth;
+        h = originHeight;
+    }*/
+
 
     // copy screen to bitmap
     HDC     hScreen = GetDC(hwnd);
     HDC     hDC     = CreateCompatibleDC(hScreen);
     HBITMAP hBitmap = CreateCompatibleBitmap(hScreen, w, h);
     HGDIOBJ old_obj = SelectObject(hDC, hBitmap);
-    BOOL    bRet    = BitBlt(hDC, 0, 0, w, h, hScreen, 0, 0, SRCCOPY);
+    BOOL    bRet    = BitBlt(hDC, 0, 0, w, h, hScreen, l, t, SRCCOPY);
 
     BITMAP bmp;
     GetObject(hBitmap, sizeof(bmp), &bmp);
@@ -601,6 +625,10 @@ ImageData Core::CaptureScreen(HWND hwnd) {
     imgData.height = bmp.bmHeight;
     imgData.data = pixels;
     return imgData;
+}
+
+ImageData Core::CaptureScreen(HWND hwnd) {
+    return this->CaptureScreen(hwnd, 0, 0, -1, -1);
 }
 
 std::string Core::GetTextById(HWND hwnd) {
