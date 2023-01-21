@@ -1,6 +1,9 @@
 # windows-automator-lib 
 
+## Support the project
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/samick17)
+[![Donate](https://img.shields.io/badge/Donate-BuyMeCoffee-Blue.svg)](https://www.buymeacoffee.com/samick)
 
 ## Installation
 
@@ -9,6 +12,10 @@ Download node at [nodejs.org](http://nodejs.org) and install it, if you haven't 
 ```sh
 npm install windows-automator-lib --save
 ```
+
+## Related modules
+
+ - [node-abi-version](https://www.npmjs.com/package/node-abi-version)
 
 ##Description
 This is the wrapper of windows-OS keyboard/mouse simulator implemented in C++.
@@ -36,7 +43,16 @@ This is the wrapper of windows-OS keyboard/mouse simulator implemented in C++.
 	</tbody>
 </table>
 
+## Build the package
+
+```shell
+node build-all-target.js
+```
+
 ## ChangeLogs
+
+#### 2023/01/21(1.5.0)
+1. update node-abi-version to 1.2.12
 
 #### 2018/08/15(1.4.8)
 1. add new function: getWindowProperties(see also examples/get-child-windows.js)
